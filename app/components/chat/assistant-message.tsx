@@ -32,6 +32,7 @@ export function AssistantMessage({ content, className = "" }: AssistantMessagePr
         parseIncompleteMarkdown={true}
         allowedImagePrefixes={["https://", "http://", "data:"]}
         allowedLinkPrefixes={["https://", "http://", "mailto:", "#"]}
+        defaultOrigin="https://localhost:3000"
         mermaidConfig={mermaidConfig}
         shikiTheme={["github-light", "github-dark"]}
         controls={{
