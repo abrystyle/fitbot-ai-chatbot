@@ -1,6 +1,6 @@
 import { auth } from '@/lib/auth'
-import { getConversation } from '@/app/actions/chat'
-import { ChatInterface } from '@/app/components/chat/chat-interface'
+import { getConversation, sendMessage } from '@/app/actions/chat'
+import ChatInterface from '@/app/components/chat/chat-interface'
 import { redirect } from 'next/navigation'
 
 interface ChatPageProps {
@@ -22,11 +22,18 @@ export default async function ChatPage({ params }: ChatPageProps) {
     redirect('/chat')
   }
 
+  // Server Action wrapper para el componente cliente
+  async function handleSendMessage(formData: FormData) {
+    'use server'
+    return await sendMessage(formData)
+  }
+
   return (
     <div className="h-full">
       <ChatInterface 
         conversationId={conversation.id}
         initialMessages={conversation.messages || []}
+        sendMessageAction={handleSendMessage}
       />
     </div>
   )
