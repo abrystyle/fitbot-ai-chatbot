@@ -154,11 +154,11 @@ export default function ChatInterface({ conversationId, initialMessages = [], se
                 <p className="text-sm">
                   Estoy aquí para ayudarte con tu fitness y nutrición. Puedes preguntarme sobre:
                 </p>
-                <ul className="text-sm mt-2 space-y-1">
-                  <li>• Rutinas de ejercicios personalizadas</li>
-                  <li>• Consejos de nutrición y dietas</li>
-                  <li>• Recomendaciones de suplementos</li>
-                  <li>• Planificación de entrenamientos</li>
+                <ul className="text-sm grid grid-row-2 grid-cols-2 mt-2 space-y-2 space-x-2 list-none">
+                  <li className='border border-gray-200 px-4 py-8'>Rutinas de ejercicios personalizadas</li>
+                  <li className='border border-gray-200 px-4 py-8'>Consejos de nutrición y dietas</li>
+                  <li className='border border-gray-200 px-4 py-8'>Recomendaciones de suplementos</li>
+                  <li className='border border-gray-200 px-4 py-8'>Planificación de entrenamientos</li>
                 </ul>
               </div>
             </CardContent>
