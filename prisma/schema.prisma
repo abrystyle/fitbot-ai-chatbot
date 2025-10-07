@@ -1,0 +1,274 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model User {
+  id                   String         @id @default(cuid())
+  name                 String?
+  email                String         @unique
+  emailVerified        DateTime?
+  image                String?
+  passwordHash         String?
+  profile              Json?          // edad, peso, altura, objetivos
+  subscriptionTier     SubscriptionTier @default(BASIC)
+  conversationsUsed    Int            @default(0)
+  conversationsLimit   Int            @default(10)
+  accounts             Account[]
+  sessions             Session[]
+  conversations        Conversation[]
+  recommendations      Recommendation[]
+  productClicks        ProductClick[]
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  
+  @@map("users")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verificationtokens")
+}
+
+model Conversation {
+  id                  String    @id @default(cuid())
+  userId              String
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title               String?
+  messages            Message[]
+  productsRecommended Json[]    // IDs de productos recomendados
+  status              ConversationStatus @default(ACTIVE)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  
+  @@map("conversations")
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role           MessageRole
+  content        String       @db.Text
+  metadata       Json?        // información adicional como tokens, tiempo de respuesta, etc.
+  createdAt      DateTime     @default(now())
+  
+  @@map("messages")
+}
+
+model Product {
+  id              String   @id @default(cuid())
+  name            String
+  brand           String?
+  category        ProductCategory
+  description     String?  @db.Text
+  shortDescription String?
+  price           Decimal  @db.Decimal(10, 2)
+  originalPrice   Decimal? @db.Decimal(10, 2)
+  currency        String   @default("EUR")
+  characteristics Json?    // ingredientes, composición, etc.
+  imageUrl        String?
+  images          String[] // URLs adicionales de imágenes
+  affiliateLink   String?
+  productUrl      String?  // URL del producto original
+  rating          Decimal  @default(0) @db.Decimal(3, 2)
+  reviewCount     Int      @default(0)
+  inStock         Boolean  @default(true)
+  isActive        Boolean  @default(true)
+  tags            String[] // etiquetas para búsqueda
+  nutritionFacts  Json?    // información nutricional
+  instructions    String?  // instrucciones de uso
+  warnings        String?  // advertencias y contraindicaciones
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  
+  productClicks   ProductClick[]
+  
+  @@map("products")
+}
+
+model Recommendation {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  context     String   @db.Text // contexto de la conversación
+  products    String[] // IDs de productos recomendados
+  explanation String   @db.Text // explicación de la recomendación
+  algorithm   String?  // algoritmo usado
+  score       Decimal? @db.Decimal(5, 4) // score de la recomendación
+  clicked     Boolean  @default(false)
+  purchased   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  
+  @@map("recommendations")
+}
+
+model ProductClick {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  source    String   // 'recommendation', 'search', 'browse'
+  timestamp DateTime @default(now())
+  sessionId String?  // para tracking de sesión
+  
+  @@map("product_clicks")
+}
+
+model FitnessProfile {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  age             Int?
+  gender          Gender?
+  weight          Decimal? @db.Decimal(5, 2) // kg
+  height          Int?     // cm
+  activityLevel   ActivityLevel?
+  fitnessGoals    FitnessGoal[]
+  workoutDays     Int?     // días por semana
+  experience      ExperienceLevel?
+  injuries        String[] // lesiones o limitaciones
+  allergies       String[] // alergias alimentarias
+  dietType        DietType?
+  budget          Decimal? @db.Decimal(8, 2)
+  preferredBrands String[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  
+  @@map("fitness_profiles")
+}
+
+model SearchQuery {
+  id        String   @id @default(cuid())
+  userId    String?
+  query     String
+  results   Json     // resultados de la búsqueda
+  source    String   // 'tavily', 'serper', etc.
+  timestamp DateTime @default(now())
+  
+  @@map("search_queries")
+}
+
+// Enums
+
+enum SubscriptionTier {
+  BASIC
+  PREMIUM
+  PRO
+}
+
+enum ConversationStatus {
+  ACTIVE
+  COMPLETED
+  ARCHIVED
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+  SYSTEM
+}
+
+enum ProductCategory {
+  PROTEIN
+  CREATINE
+  PRE_WORKOUT
+  POST_WORKOUT
+  VITAMINS
+  MINERALS
+  FAT_BURNER
+  AMINO_ACIDS
+  CARBOHYDRATES
+  MASS_GAINER
+  OMEGA_3
+  MULTIVITAMIN
+  JOINT_SUPPORT
+  ENERGY
+  BARS_SNACKS
+  EQUIPMENT
+  OTHER
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum ActivityLevel {
+  SEDENTARY
+  LIGHTLY_ACTIVE
+  MODERATELY_ACTIVE
+  VERY_ACTIVE
+  EXTREMELY_ACTIVE
+}
+
+enum FitnessGoal {
+  WEIGHT_LOSS
+  MUSCLE_GAIN
+  STRENGTH
+  ENDURANCE
+  GENERAL_HEALTH
+  COMPETITION_PREP
+  RECOVERY
+  FLEXIBILITY
+}
+
+enum ExperienceLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  PROFESSIONAL
+}
+
+enum DietType {
+  OMNIVORE
+  VEGETARIAN
+  VEGAN
+  KETO
+  PALEO
+  MEDITERRANEAN
+  INTERMITTENT_FASTING
+  OTHER
+}
