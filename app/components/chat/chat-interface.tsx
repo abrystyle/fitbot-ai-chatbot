@@ -93,7 +93,7 @@ export default function ChatInterface({ conversationId, initialMessages = [], se
       if (result && typeof result === 'object' && 'messageStream' in result) {
         let fullResponse = ''
         
-        for await (const delta of readStreamableValue(result.messageStream as Parameters<typeof readStreamableValue>[0])) {
+        for await (const delta of readStreamableValue(result.messageStream as any)) {
           if (delta) {
             fullResponse = delta as string
             setCurrentResponse(delta as string)
@@ -131,7 +131,7 @@ export default function ChatInterface({ conversationId, initialMessages = [], se
   return (
     <div className="flex flex-col h-full max-w-4xl mx-auto">
       {/* Header */}
-      <Card className="mb-4">
+      <Card className="mb-4 ">
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2">
             <Bot className="h-5 w-5 text-blue-500" />
