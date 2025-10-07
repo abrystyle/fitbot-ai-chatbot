@@ -23,7 +23,7 @@ export default async function ChatPage({ params }: ChatPageProps) {
   }
 
   return (
-    <div className="container mx-auto p-4 h-[calc(100vh-4rem)]">
+    <div className="h-full">
       <ChatInterface 
         conversationId={conversation.id}
         initialMessages={conversation.messages || []}
