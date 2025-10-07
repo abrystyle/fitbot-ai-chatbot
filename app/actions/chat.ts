@@ -121,7 +121,24 @@ export async function sendMessage(formData: FormData) {
   })
 
   // Crear contexto personalizado
-  let systemPrompt = `Eres FitBot, un entrenador personal con IA especializado en fitness y nutrición.`
+  let systemPrompt = `Eres FitBot, un entrenador personal con IA especializado en fitness y nutrición.
+
+Puedes usar Markdown enriquecido para responder. Tienes acceso a:
+- **Texto en negrita** y *cursiva*
+- Listas numeradas y con viñetas
+- Tablas para planes de entrenamiento y valores nutricionales
+- Bloques de código para rutinas específicas
+- Matemáticas LaTeX para cálculos (usa $$ para ecuaciones)
+- Diagramas Mermaid para visualizar progreso
+
+Para consejos importantes, usa:
+> **💡 Consejo:** Tu texto aquí
+
+Para información nutricional:
+> **🥗 Nutrición:** Tu información aquí
+
+Para advertencias:
+> **⚠️ Importante:** Tu advertencia aquí`
   
   if (fitnessProfile) {
     systemPrompt += `\n\nPerfil del usuario:
@@ -142,24 +159,46 @@ export async function sendMessage(formData: FormData) {
       // Verificar si hay API key configurada
       if (!process.env.OPENAI_API_KEY) {
         // Simular respuesta de demostración si no hay API key
-        const demoResponse = `¡Hola! Soy FitBot, tu entrenador personal con IA 💪
+        const demoResponse = `# ¡Hola! Soy FitBot 💪
 
-Para funcionar completamente, necesito que configures una API key de OpenAI en el archivo .env.local:
+## 🚀 Configuración requerida
+Para funcionar completamente, necesito que configures una API key de OpenAI en el archivo \`.env.local\`:
 
-\`\`\`
+\`\`\`bash
 OPENAI_API_KEY=tu_clave_openai_aqui
 \`\`\`
 
-Mientras tanto, puedo ayudarte con información general sobre fitness. Tu pregunta fue: "${message}"
+## 📝 Tu consulta
+> **Pregunta:** ${message}
 
-Algunas sugerencias generales:
-• Mantén una rutina de ejercicios consistente
-• Combina cardio con entrenamiento de fuerza
-• Consume proteína suficiente para recuperación muscular
-• Mantente hidratado durante tus entrenamientos
-• Descansa adecuadamente entre sesiones
+## 💡 Consejos generales mientras configuras la API
 
-¡Configura tu API key para obtener respuestas personalizadas completas!`
+### 🏋️ Principios básicos del entrenamiento:
+1. **Consistencia** - Mantén una rutina regular
+2. **Progresión** - Aumenta gradualmente la intensidad
+3. **Descanso** - Permite recuperación muscular
+4. **Nutrición** - Alimenta tu cuerpo correctamente
+
+### 📊 Ejemplo de rutina semanal
+
+| Día | Actividad | Duración |
+|-----|-----------|----------|
+| Lunes | Fuerza (Tren superior) | 45 min |
+| Martes | Cardio | 30 min |
+| Miércoles | Fuerza (Tren inferior) | 45 min |
+| Jueves | Descanso activo | 20 min |
+| Viernes | Fuerza (Cuerpo completo) | 50 min |
+| Sábado | Cardio/Actividad libre | 30-60 min |
+| Domingo | Descanso | - |
+
+### 🥗 Macronutrientes esenciales
+- **Proteína:** 1.6-2.2g por kg de peso corporal
+- **Carbohidratos:** 3-7g por kg (según actividad)
+- **Grasas:** 20-35% del total calórico
+
+> **⚠️ Importante:** Consulta con un profesional antes de iniciar cualquier programa de ejercicios intenso.
+
+¡Configura tu **API key** para obtener respuestas personalizadas y planes específicos para tus objetivos! 🎯`
 
         // Simular streaming
         let currentText = ''

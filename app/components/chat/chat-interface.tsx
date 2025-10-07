@@ -7,7 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/ca
 import { Avatar, AvatarFallback } from '@/app/components/ui/avatar'
 import { Send, Bot, User, Loader2 } from 'lucide-react'
 import { useFormStatus } from 'react-dom'
-import { readStreamableValue } from '@ai-sdk/rsc'
+import { readStreamableValue, StreamableValue } from '@ai-sdk/rsc'
+import { AssistantMessage } from './assistant-message'
 
 interface Message {
   id: string
@@ -18,7 +19,7 @@ interface Message {
 
 interface StreamResult {
   conversationId: string
-  messageStream: unknown
+  messageStream: StreamableValue<string>
 }
 
 interface ChatInterfaceProps {
@@ -93,7 +94,7 @@ export default function ChatInterface({ conversationId, initialMessages = [], se
       if (result && typeof result === 'object' && 'messageStream' in result) {
         let fullResponse = ''
         
-        for await (const delta of readStreamableValue(result.messageStream as any)) {
+        for await (const delta of readStreamableValue(result.messageStream)) {
           if (delta) {
             fullResponse = delta as string
             setCurrentResponse(delta as string)
@@ -183,7 +184,11 @@ export default function ChatInterface({ conversationId, initialMessages = [], se
                 : 'bg-gray-50'
             }`}>
               <CardContent className="pt-3 pb-3">
-                <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                {message.role === 'assistant' ? (
+                  <AssistantMessage content={message.content} />
+                ) : (
+                  <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                )}
                 <span className="text-xs text-muted-foreground mt-2 block">
                   {message.createdAt.toLocaleTimeString()}
                 </span>
@@ -203,7 +208,7 @@ export default function ChatInterface({ conversationId, initialMessages = [], se
             
             <Card className="flex-1 bg-gray-50">
               <CardContent className="pt-3 pb-3">
-                <p className="text-sm whitespace-pre-wrap">{currentResponse}</p>
+                <AssistantMessage content={currentResponse} />
                 <div className="flex items-center gap-2 mt-2">
                   <Loader2 className="h-3 w-3 animate-spin text-blue-500" />
                   <span className="text-xs text-muted-foreground">Escribiendo...</span>

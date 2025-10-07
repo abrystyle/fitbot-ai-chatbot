@@ -66,3 +66,146 @@
     color: hsl(var(--foreground));
   }
 }
+
+/* Estilos personalizados para StreamDown */
+.streamdown-content {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.streamdown-content h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: hsl(var(--foreground));
+}
+
+.streamdown-content h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: hsl(var(--foreground));
+}
+
+.streamdown-content h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: hsl(var(--foreground));
+}
+
+.streamdown-content p {
+  margin-bottom: 0.75rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.streamdown-content ul, .streamdown-content ol {
+  margin-bottom: 0.75rem;
+  margin-left: 1rem;
+}
+
+.streamdown-content li {
+  margin-bottom: 0.25rem;
+}
+
+.streamdown-content ul li {
+  list-style-type: disc;
+}
+
+.streamdown-content ol li {
+  list-style-type: decimal;
+}
+
+.streamdown-content blockquote {
+  border-left: 4px solid hsl(var(--primary));
+  padding-left: 1rem;
+  margin: 1rem 0;
+  background-color: hsl(var(--muted));
+  padding: 0.5rem 1rem;
+  font-style: italic;
+  color: hsl(var(--muted-foreground));
+}
+
+.streamdown-content code:not(pre code) {
+  background-color: hsl(var(--muted));
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-family: monospace;
+  color: hsl(var(--foreground));
+}
+
+.streamdown-content pre {
+  background-color: #1f2937;
+  color: #f9fafb;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.streamdown-content pre code {
+  background-color: transparent;
+  padding: 0;
+  font-size: 0.875rem;
+}
+
+.streamdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.streamdown-content th {
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--muted));
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 500;
+}
+
+.streamdown-content td {
+  border: 1px solid hsl(var(--border));
+  padding: 0.75rem 1rem;
+}
+
+.streamdown-content a {
+  color: hsl(var(--primary));
+  text-decoration: underline;
+}
+
+.streamdown-content a:hover {
+  color: hsl(var(--primary));
+  opacity: 0.8;
+}
+
+.streamdown-content strong {
+  font-weight: 600;
+  color: hsl(var(--foreground));
+}
+
+.streamdown-content em {
+  font-style: italic;
+}
+
+/* Estilos específicos para elementos de fitness */
+.fitness-tip {
+  background-color: #f0f9ff;
+  border-left: 4px solid #22c55e;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.nutrition-info {
+  background-color: #fffbeb;
+  border-left: 4px solid #f97316;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.warning {
+  background-color: #fef2f2;
+  border-left: 4px solid #ef4444;
+  padding: 1rem;
+  margin: 1rem 0;
+}
