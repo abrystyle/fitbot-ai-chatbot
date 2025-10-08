@@ -2,6 +2,7 @@ import { auth } from '@/lib/auth'
 import { getConversationsAction } from '@/app/actions/sidebar'
 import { redirect } from 'next/navigation'
 import ChatLayoutClient from './chat-layout-client'
+import AppHeader from '@/app/components/layout/app-header'
 
 interface ConversationType {
   id: string
@@ -37,13 +38,16 @@ export default async function ChatLayout({
   }))
 
   return (
-    <div className="flex h-[screen] bg-gray-50">
-      <ChatLayoutClient 
-        conversations={conversationsWithCount}
-        currentConversationId={params.id}
-      >
-        {children}
-      </ChatLayoutClient>
+    <div className="fixed inset-0 flex flex-col bg-gray-50">
+      <AppHeader title="FitBot - Tu Entrenador Personal con IA" />
+      <div className="flex flex-1 overflow-hidden">
+        <ChatLayoutClient 
+          conversations={conversationsWithCount}
+          currentConversationId={params.id}
+        >
+          {children}
+        </ChatLayoutClient>
+      </div>
     </div>
   )
 }

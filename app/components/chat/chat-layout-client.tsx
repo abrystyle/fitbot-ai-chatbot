@@ -2,9 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Button } from '@/app/components/ui/button'
 import ConversationSidebar from './conversation-sidebar'
-import { Menu, X } from 'lucide-react'
 
 interface ConversationType {
   id: string
@@ -60,24 +58,8 @@ export default function ChatLayoutClient({
       )}
 
       {/* Contenido principal */}
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Header con botón para toggle sidebar */}
-        <div className="bg-white border-b border-gray-200 p-4 lg:hidden flex flex-row items-center">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-2"
-          >
-            {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
-          </Button>
-          <h2 className='font-semibold'>FitBot</h2>
-        </div>
-
-        {/* Contenido del chat */}
-        <div className="flex-1 overflow-hidden">
-          {children}
-        </div>
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        {children}
       </div>
     </>
   )
