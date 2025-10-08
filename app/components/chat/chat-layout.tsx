@@ -37,7 +37,7 @@ export default async function ChatLayout({
   }))
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-[screen] bg-gray-50">
       <ChatLayoutClient 
         conversations={conversationsWithCount}
         currentConversationId={params.id}

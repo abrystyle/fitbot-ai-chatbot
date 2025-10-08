@@ -70,9 +70,9 @@ export default function ConversationSidebar({
   }
 
   return (
-    <div className="w-80 border-r bg-gray-50/50 flex flex-col h-full">
+    <div className="w-80  bg-gray-50/50 border-r flex flex-col max-h-screen h-screen ">
       {/* Header */}
-      <div className="p-4 border-b bg-white">
+      <div className="px-4 py-2 ">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-gray-900">
             Conversaciones
@@ -81,15 +81,15 @@ export default function ConversationSidebar({
             onClick={handleNewConversation}
             disabled={isLoading}
             size="sm"
-            className="shrink-0"
+            className="shrink-0 hover:cursor-pointer bg-sky-600 text-white hover:bg-sky-700 focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-gray-100"
           >
-            <Plus className="h-4 w-4 mr-1" />
+            <Plus className="h-4 w-4 " />
             Nueva
           </Button>
         </div>
         
         <div className="text-sm text-gray-600">
-          {conversations.length} conversación{conversations.length !== 1 ? 'es' : ''}
+                  {conversations.length} conversacion{conversations.length !== 1 ? 'es' : ''} anterior{conversations.length !== 1 ? 'es' : ''}
         </div>
       </div>
 
@@ -112,7 +112,7 @@ export default function ConversationSidebar({
               }`}
               onClick={() => onSelectConversation(conversation.id)}
             >
-              <CardContent className="p-3">
+              <CardContent className="px-3">
                 <div className="flex items-start justify-between">
                   <div className="flex-1 min-w-0">
                     <h3 className="font-medium text-sm text-gray-900 truncate mb-1">
@@ -133,7 +133,7 @@ export default function ConversationSidebar({
                       )}
                     </div>
 
-                    <div className="flex items-center justify-between mt-2">
+                    <div className="flex items-center justify-between mt-2.5">
                       <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${
                         conversation.status === 'ACTIVE' 
                           ? 'bg-green-100 text-green-800' 
@@ -164,7 +164,7 @@ export default function ConversationSidebar({
       </div>
 
       {/* Footer con estadísticas */}
-      <div className="p-4 border-t bg-white text-xs text-gray-500">
+      {/* <div className="p-4 border-t bg-white text-xs text-gray-500">
         <div className="flex items-center justify-between">
           <span>FitBot AI</span>
           <div className="flex items-center gap-1">
@@ -172,7 +172,7 @@ export default function ConversationSidebar({
             Tiempo real
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

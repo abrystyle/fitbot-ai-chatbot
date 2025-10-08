@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={inter.className}>
-        <div className='max-w-7xl mx-auto px-4 py-8'>
+        <div className='max-w-7xl mx-auto py-4 sm:px-4 sm:py-8'>
         {children}
         </div>
         {/* <Toaster /> */}

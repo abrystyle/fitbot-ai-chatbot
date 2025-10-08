@@ -29,7 +29,7 @@ export default async function ChatPage({ params }: ChatPageProps) {
   }
 
   return (
-    <div className="h-full">
+    <div className="h-[full]">
       <ChatInterface 
         conversationId={conversation.id}
         initialMessages={conversation.messages || []}

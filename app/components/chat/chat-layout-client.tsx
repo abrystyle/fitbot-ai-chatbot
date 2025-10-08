@@ -40,8 +40,8 @@ export default function ChatLayoutClient({
     <>
       {/* Sidebar */}
       <div className={`
-        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
-        fixed inset-y-0 left-0 z-50 w-80 bg-white shadow-xl transition-transform duration-300 ease-in-out
+        ${sidebarOpen ? 'translate-x-0 shadow-lg sm:shadow-none' : '-translate-x-full'} 
+        fixed inset-y-0 left-0 z-50 w-80 max-h-dvh bg-white  transition-transform duration-300 ease-in-out
         lg:relative lg:translate-x-0
       `}>
         <ConversationSidebar 
@@ -54,7 +54,7 @@ export default function ChatLayoutClient({
       {/* Overlay para móviles */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          className="fixed inset-0 blur-xl bg-white/70 bg-opacity-50 z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -62,7 +62,7 @@ export default function ChatLayoutClient({
       {/* Contenido principal */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Header con botón para toggle sidebar */}
-        <div className="bg-white border-b border-gray-200 p-4 lg:hidden">
+        <div className="bg-white border-b border-gray-200 p-4 lg:hidden flex flex-row items-center">
           <Button
             variant="ghost"
             size="sm"
@@ -71,6 +71,7 @@ export default function ChatLayoutClient({
           >
             {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </Button>
+          <h2 className='font-semibold'>FitBot</h2>
         </div>
 
         {/* Contenido del chat */}
